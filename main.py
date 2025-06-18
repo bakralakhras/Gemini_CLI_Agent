@@ -4,6 +4,10 @@ from google import genai
 from google.genai import types
 from schemas import available_functions
 from functions.call_function import call_function
+from colorama import Fore, Style, init
+
+# Initialize colorama
+init(autoreset=True)
 
 # Load API key
 load_dotenv()
@@ -29,21 +33,21 @@ All paths must be relative to the working directory. You do not need to specify 
 """
 
 # Intro
-print("🤖 Welcome to your AI CLI agent!")
-print("Type 'exit' to quit or 'help' for guidance.\n")
+print(Fore.CYAN + "🤖 Welcome to your AI CLI agent!")
+print(Fore.YELLOW + "Type 'exit' to quit or 'help' for guidance.\n")
 
 # Shared memory across turns
 messages = []
 
 # Main interaction loop
 while True:
-    user_input = input("You: ")
+    user_input = input(Fore.GREEN + "You: " + Style.RESET_ALL)
     if user_input.strip().lower() in ["exit", "quit"]:
-        print("👋 Goodbye!")
+        print(Fore.CYAN + "👋 Goodbye!")
         break
 
     if user_input.strip().lower() == "help":
-        print("""
+        print(Fore.BLUE + """
 📘 Available commands:
 - Natural language tasks like:
     - "run main.py"
@@ -76,5 +80,5 @@ while True:
                 tool_response = call_function(call)
                 messages.append(tool_response)
         else:
-            print("AI:", response.text)
+            print(Fore.MAGENTA + "AI:", Fore.WHITE + response.text)
             break
