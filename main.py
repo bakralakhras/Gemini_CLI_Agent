@@ -28,6 +28,8 @@ You can perform the following operations:
 - Read file contents
 - Execute Python files
 - Write or overwrite files
+- Find files
+- Push to github
 
 All paths must be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected.
 """
@@ -78,6 +80,13 @@ while True:
         if response.function_calls:
             for call in response.function_calls:
                 tool_response = call_function(call)
+
+                # Prevent repeated git push spam
+                if call.name == "git_commit_and_push":
+                    print(Fore.CYAN + "🛑 Git push called. Stopping loop to prevent duplicates.")
+                    messages.append(tool_response)
+                    break
+
                 messages.append(tool_response)
         else:
             print(Fore.MAGENTA + "AI:", Fore.WHITE + response.text)

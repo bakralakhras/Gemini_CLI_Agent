@@ -1,8 +1,4 @@
-import os
-from dotenv import load_dotenv
-from google import genai
 from google.genai import types
-import sys
 
 schema_get_files_info = types.FunctionDeclaration(
     name="get_files_info",
@@ -65,10 +61,39 @@ schema_write_file=types.FunctionDeclaration(
         }
     )
 )
+schema_find_matching_file = types.FunctionDeclaration(
+    name="find_matching_file",
+    description="Finds Python files in the working directory that may contain logic to evaluate a mathematical expression.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "expression": types.Schema(
+                type=types.Type.STRING,
+                description="The expression the user wants to evaluate (e.g., '3+7*2')"
+            )
+        }
+    )
+)
+schema_git_commit_and_push = types.FunctionDeclaration(
+    name="git_commit_and_push",
+    description="Use only when the user explicitly asks to push or commit to GitHub.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "commit_message": types.Schema(
+                type=types.Type.STRING,
+                description="The commit message to use for the Git commit."
+            )
+        }
+    )
+)
+
+
 
 available_functions = types.Tool(
     function_declarations=[
-        schema_get_files_info,schema_run_python_file,schema_get_file_content,schema_write_file
+        schema_get_files_info,schema_run_python_file,schema_get_file_content,schema_write_file,schema_find_matching_file,schema_git_commit_and_push
 
     ]
 )
+

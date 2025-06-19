@@ -2,6 +2,8 @@ from functions.get_file_content import get_file_content
 from functions.get_files_info import get_files_info
 from functions.run_python_file import run_python_file
 from functions.write_file import write_file
+from functions.find_matching_file import find_matching_file
+from functions.git_commit_and_push import git_commit_and_push
 from google.genai import types
 
 
@@ -13,7 +15,7 @@ def call_function(function_call_part,verbose=False):
         print(f" - Calling function: {function_call_part.name}")
     
     working_directory="./calculator"
-    function_map={"get_files_info":get_files_info,"get_file_content":get_file_content,"run_python_file":run_python_file,"write_file":write_file}
+    function_map={"get_files_info":get_files_info,"get_file_content":get_file_content,"run_python_file":run_python_file,"write_file":write_file,"find_matching_file":find_matching_file,"git_commit_and_push": git_commit_and_push}
     func=function_map.get(function_call_part.name)
     if function_call_part.name not in function_map:
         return types.Content(
