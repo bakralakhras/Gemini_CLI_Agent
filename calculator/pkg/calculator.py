@@ -29,10 +29,16 @@ class Calculator:
         operators = []
 
         for token in tokens:
-            if token in self.operators:
+            if token == '(':  
+                operators.append(token)
+            elif token == ')':
+                while operators and operators[-1] != '(':   
+                    self._apply_operator(operators, values)
+                operators.pop()  
+            elif token in self.operators:
                 while (
                     operators
-                    and operators[-1] in self.operators
+                    and operators[-1] not in ('(', ')')
                     and self.precedence[operators[-1]] >= self.precedence[token]
                 ):
                     self._apply_operator(operators, values)
@@ -62,3 +68,7 @@ class Calculator:
         b = values.pop()
         a = values.pop()
         values.append(self.operators[operator](a, b))
+
+calculator = Calculator()
+result = calculator.evaluate("3+7*2")
+print(result)
